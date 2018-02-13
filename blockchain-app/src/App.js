@@ -9,6 +9,7 @@ class App extends Component {
     this.state = {
       apiData: null,
       apiDataLoaded: false,
+      transactionData: false,
       address: ''
     };
     this.handleAddressChange = this.handleAddressChange.bind(this);
@@ -27,11 +28,12 @@ class App extends Component {
  handleAddressSubmit (e) {
    e.preventDefault();
    console.log(`about to submit ${this.state.address}`)
-   axios.get('https://blockchain.info/rawaddr/' + this.state.address)
+   axios.get('https://blockchain.info/rawaddr/'+ this.state.address)
    .then(res => {
     console.log(res.data);
+    console.log(res.data.final_balance)
     this.setState({
-      apiData: res.data,
+      apiData: res.data.final_balance, 
       apiDataLoaded: true,
     });
    });
@@ -47,8 +49,7 @@ class App extends Component {
         handleAddressChange = {this.handleAddressChange}
         handleAddressSubmit = {this.handleAddressSubmit}
         />
-
-        <h1> {this.state.apiData} BTC </h1>
+        <h1> Available Balance: {this.state.apiData} BTC </h1>
       </div>
     );
   }
