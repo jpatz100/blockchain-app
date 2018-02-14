@@ -7,14 +7,15 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      apiData: null,
+      apiData: [],
       apiDataLoaded: false,
-      transactionData: false,
       address: ''
     };
     this.handleAddressChange = this.handleAddressChange.bind(this);
     this.handleAddressSubmit = this.handleAddressSubmit.bind(this);
   }  
+
+
 
 
   handleAddressChange(e) {
@@ -25,33 +26,53 @@ class App extends Component {
     this.setState({ address: address})
   }
 
+
+
  handleAddressSubmit (e) {
    e.preventDefault();
    console.log(`about to submit ${this.state.address}`)
    axios.get('https://blockchain.info/rawaddr/'+ this.state.address)
    .then(res => {
     console.log(res.data);
-    console.log(res.data.final_balance)
     this.setState({
-      apiData: res.data.final_balance, 
+      apiData: res.data, 
       apiDataLoaded: true,
     });
    });
  }
 
 
-
-
   render() {
-    return (
+    if(this.state.apiData.txs) {
+      console.log('in txs return')
+      {console.log(this.state.apiData.txs)}
+      return (
       <div className="App">
         <AddressForm address={this.state.address}
         handleAddressChange = {this.handleAddressChange}
         handleAddressSubmit = {this.handleAddressSubmit}
         />
-        <h1> Available Balance: {this.state.apiData} BTC </h1>
+        <h1> Available Balance: {this.state.apiData.final_balance} BTC </h1>
+        <h2> Recent Transactions: </h2>
+          <ul className="output">
+            {this.state.apiData.txs.map((el, i) => {
+              return <ol> <p> Hash: </p> <br></br> {el.hash}</ol>
+            })} 
+          </ul>
       </div>
-    );
+      );
+    } else {
+      console.log('in no txs return')
+      return (
+      <div className="App">
+        <AddressForm address={this.state.address}
+        handleAddressChange = {this.handleAddressChange}
+        handleAddressSubmit = {this.handleAddressSubmit}
+        />
+        <h1> Available Balance: {this.state.apiData.final_balance} BTC </h1>
+      </div>
+      );
+    }
   }
 }
 
