@@ -7,6 +7,7 @@ body {
 
 .main-head {
 	color: white;
+	font-size: 38px;
 }
 
 .input-box {
@@ -14,6 +15,11 @@ body {
 }
 
 .address-label {
+	font-family: Courier;
+	color: white;
+}
+
+.output {
 	font-family: Courier;
 	color: white;
 }

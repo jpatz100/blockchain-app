@@ -15,9 +15,7 @@ class App extends Component {
     this.handleAddressSubmit = this.handleAddressSubmit.bind(this);
   }  
 
-
-
-
+  //Handler method targets and then logs the users address input into the console
   handleAddressChange(e) {
     console.log(e.target.value);
     const target = e.target
@@ -27,7 +25,7 @@ class App extends Component {
   }
 
 
-
+//submit method uses Axios to GET the data back from the API and then plugs in the users BTC wallet address. 
  handleAddressSubmit (e) {
    e.preventDefault();
    console.log(`about to submit ${this.state.address}`)
@@ -41,8 +39,9 @@ class App extends Component {
    });
  }
 
-
-  render() {
+ //Checks to see if API data was successfully retrieved, then it is rendered onto the page. 
+//.map function was required in order to extract the data from the JSON array. 
+  render() {                     
     if(this.state.apiData.txs) {
       console.log('in txs return')
       {console.log(this.state.apiData.txs)}
@@ -55,14 +54,13 @@ class App extends Component {
         <h1> Available Balance: {this.state.apiData.final_balance} BTC </h1>
         <h2> Recent Transactions: </h2>
           <ul className="output">
-            {this.state.apiData.txs.map((el, i) => {
-              return <ol> <p> Hash: </p> <br></br> {el.hash}</ol>
+            {this.state.apiData.txs.map((el, i) => {      
+              return <ol> <p> Hash ID: </p> {el.hash} </ol>
             })} 
           </ul>
-      </div>
+        </div>
       );
-    } else {
-      console.log('in no txs return')
+    } else {  //An IF-ELSE Statement was used in order to test parts of the code. 
       return (
       <div className="App">
         <AddressForm address={this.state.address}
